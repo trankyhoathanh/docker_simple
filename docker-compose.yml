@@ -1,0 +1,50 @@
+version: '2'
+
+services:
+  redis:
+    container_name: redis
+    restart: on-failure
+    image: docker.io/bitnami/redis:7.0
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+    ports:
+      - '6379:6379'
+    volumes:
+      - './data:/bitnami/redis/data'
+
+  input:
+    container_name: input
+    restart: on-failure
+    build: ./services/01_input
+    volumes:
+      - ./src:/app/src
+    ports:
+      - "3000:3000"
+    command: >
+      sh -c "yarn start"
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    links: 
+      - redis
+
+  email:
+    container_name: email
+    restart: on-failure
+    build: ./services/02_email
+    volumes:
+      - ./src:/app/src
+    ports:
+      - "3001:3001"
+    command: >
+      sh -c "yarn start"
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    links: 
+      - redis
+
+volumes:
+  redis:
+    driver: local

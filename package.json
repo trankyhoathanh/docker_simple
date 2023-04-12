@@ -1,0 +1,18 @@
+{
+    "name": "docker_simple",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "author": "Thanh Tran",
+    "dependencies": {
+        "body-parser": "^1.20.1",
+        "bull": "^4.10.0",
+        "compression": "^1.7.4",
+        "express": "^4.18.1",
+        "method-override": "^3.0.0",
+        "moment": "^2.29.4"
+    },
+    "scripts": {
+        "start": "node index.js"
+    }
+}
